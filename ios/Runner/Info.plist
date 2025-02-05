@@ -45,5 +45,20 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+    <string>fetch</string>
+    <string>remote-notification</string>
+	</array>
+
+<key>NSUserTrackingUsageDescription</key>
+<string>This app uses notifications to remind you about your tasks.</string>
+
+<key>UIUserNotificationSettings</key>
+<dict>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Required to notify you about tasks.</string>
+</dict>
+
 </dict>
 </plist>

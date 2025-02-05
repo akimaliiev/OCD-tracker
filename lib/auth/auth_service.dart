@@ -1,48 +1,107 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../models/user_model.dart'; 
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
-  User? getCurrentUser(){
+  User? getCurrentUser() {
     return _auth.currentUser;
   }
 
-  Future<UserCredential> signInWithEmailPassword(String email, password) async{
-    try{
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
-      // await _fireStore.collection("Users").doc(userCredential.user!.uid).set(
-      //   {
-      //     'uid': userCredential.user!.uid,
-      //     'email': email,
-      //   }
-      // );
-      return userCredential;
-    } on FirebaseAuthException catch (e){
-      throw Exception(e.code);
+  Future<DateTime?> getTrialStartDate() async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        DocumentSnapshot<Map<String, dynamic>> userDoc =
+            await _fireStore.collection("Users").doc(user.uid).get();
+
+        if (userDoc.exists) {
+          print('User document: ${userDoc.data()}');
+          String? trialStartDateStr = userDoc.data()?['trialStartDate'];
+          if (trialStartDateStr != null) {
+            return DateTime.parse(trialStartDateStr);
+          }
+        } else {
+          print("Document does not exist for user: ${user.uid}");
+        }
+      }
+    } catch (e) {
+      print('Error fetching trial start date: $e');
     }
+    return null;
   }
 
-  Future<UserCredential> signUpWithEmailPassword(String email, password) async{
+  Future<bool> isUserSubscribed() async {
     try {
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      User? user = _auth.currentUser;
+      if (user != null) {
+        DocumentSnapshot<Map<String, dynamic>> userDoc =
+            await _fireStore.collection("Users").doc(user.uid).get();
 
-      _fireStore.collection("Users").doc(userCredential.user!.uid).set(
-        {
+        if (userDoc.exists) {
+          return userDoc.data()?['isSubscribed'] ?? false;
+        }
+      }
+    } catch (e) {
+      print('Error checking subscription status: $e');
+    }
+    return false;
+  }
+
+  Future<UserCredential> signInWithEmailPassword(String email, String password) async {
+    try {
+      UserCredential userCredential =
+          await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+      DocumentReference<Map<String, dynamic>> userRef =
+          _fireStore.collection("Users").doc(userCredential.user!.uid);
+      DocumentSnapshot<Map<String, dynamic>> userDoc = await userRef.get();
+
+      if (!userDoc.exists) {
+        await userRef.set({
           'uid': userCredential.user!.uid,
           'email': email,
-        }
-      );
+          'trialStartDate': DateTime.now().toIso8601String(),
+          'isSubscribed': false,
+        });
+      }
       return userCredential;
-
     } on FirebaseAuthException catch (e) {
-      throw Exception(e.code);
+      print('Error signing in: $e');
+      throw Exception(e.message ?? 'Sign-in failed');
     }
   }
 
-  Future<void> signOut() async{
-    return await _auth.signOut();
+  Future<UserCredential> signUpWithEmailPassword(String email, String password) async {
+    try {
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      UserModel newUser = UserModel(
+        uid: userCredential.user!.uid,
+        email: email,
+        trialStartDate: DateTime.now(),
+        isSubscribed: false,
+      );
+
+      await _fireStore.collection("Users").doc(newUser.uid).set(newUser.toFirestore());
+
+      return userCredential;
+    } on FirebaseAuthException catch (e) {
+      print('Error signing up: $e');
+      throw Exception(e.message ?? 'Sign-up failed');
+    }
+  }
+
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
+    } catch (e) {
+      print('Error signing out: $e');
+    }
   }
 }

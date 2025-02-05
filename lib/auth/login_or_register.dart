@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ocr_2/screens/login_page.dart';
-import 'package:ocr_2/screens/register_page.dart';
+import 'package:ocr_2/pages/login_page.dart';
+import 'package:ocr_2/pages/register_page.dart';
 
 
 class LoginOrRegister extends StatefulWidget {

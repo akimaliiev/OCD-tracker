@@ -6,13 +6,13 @@ class AuthProvider with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? _user;
 
-  User? get user => _auth.currentUser; // Directly retrieve the current user from FirebaseAuth
+  User? get user => _auth.currentUser; 
 
   /// Sign in with Google
   Future<void> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      if (googleUser == null) return; // User canceled the sign-in
+      if (googleUser == null) return; 
 
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;

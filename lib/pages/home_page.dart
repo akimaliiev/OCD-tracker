@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ocr_2/auth/auth_service.dart';
-
-import 'package:ocr_2/screens/anxiety_diary_page.dart';
-import 'package:ocr_2/screens/manage_compulsions_page.dart';
-import 'package:ocr_2/screens/manage_obsessions_page.dart';
+import 'package:ocr_2/components/my_drawer.dart';
+import 'package:ocr_2/pages/anxiety_diary_page.dart';
+import 'package:ocr_2/pages/compulsions/first_compulsions_page.dart';
+import 'package:ocr_2/pages/obsessions/first_obsessions_page.dart';
 
 class HomePage extends StatelessWidget {
   void logout() {
@@ -17,23 +17,28 @@ class HomePage extends StatelessWidget {
       onWillPop: () => Future.value(false),
       child: Scaffold(
         appBar: AppBar(
-          leading: const Icon(
-            Icons.account_circle,
-            size: 38,
-            color: Colors.brown, // Adjust color to match AppBar theme
-          ),
+          leading: Builder(
+            builder: (context) => IconButton(
+              onPressed: Scaffold.of(context).openDrawer, 
+              icon: const Icon(
+                Icons.account_circle, 
+                size: 40,
+                color: Colors.brown,
+              )
+          ),),
           title: const Text(
-            'OCD Tracker Home',
+            'OCD Tracker',
             style: TextStyle(color: Colors.brown),
           ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.logout),
-              color: Colors.brown,
-              onPressed: logout,
-            ),
-          ],
+          // actions: [
+          //   IconButton(
+          //     icon: const Icon(Icons.logout),
+          //     color: Colors.brown,
+          //     onPressed: logout,
+          //   ),
+          // ],
         ),
+        drawer: const MyDrawer(),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Center(
@@ -80,19 +85,19 @@ class HomePage extends StatelessWidget {
                       context,
                       icon: Icons.hourglass_empty,
                       label: 'Manage My Compulsions',
-                      routePage: ManageCompulsionsScreen(),
+                      routePage: FirstCompulsionsPage(),
                     ),
                     _buildFeatureButton(
                       context,
                       icon: Icons.psychology,
                       label: 'Manage My Obsessions',
-                      routePage: ManageObsessionsScreen(),
+                      routePage: FirstObsessionsPage(),
                     ),
                     _buildFeatureButton(
                       context,
                       icon: Icons.book,
                       label: 'Anxiety Diary',
-                      routePage: AnxietyDiaryScreen(),
+                      routePage: AnxietyDiaryPage(),
                     ),
                   ],
                 ),

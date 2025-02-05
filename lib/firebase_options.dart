@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'ocr-2-65da2.firebasestorage.app',
     measurementId: 'G-NN1KB9QFJ7',
   );
+
 }

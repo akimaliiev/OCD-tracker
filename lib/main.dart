@@ -9,7 +9,7 @@ void main() async {
   await Firebase.initializeApp();
   runApp(ChangeNotifierProvider(
     create: (context) => ThemeProvider(),
-    child: MyApp(),
+    child: const MyApp(),
   ));
 }
 

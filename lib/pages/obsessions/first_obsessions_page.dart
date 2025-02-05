@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:ocr_2/pages/obsessions/second_obsessions_page.dart';
+import 'package:ocr_2/pages/obsessions/third_obsessions_page.dart'; 
+import 'package:ocr_2/components/my_button.dart';
+import 'package:ocr_2/pages/home_page.dart';
 
-class ManageCompulsionsScreen extends StatefulWidget {
+class FirstObsessionsPage extends StatefulWidget {
   @override
-  _ManageCompulsionsScreenState createState() => _ManageCompulsionsScreenState();
+  _FirstObsessionsPageState createState() => _FirstObsessionsPageState();
 }
 
-class _ManageCompulsionsScreenState extends State<ManageCompulsionsScreen> {
-  final List<String> _compulsions = []; // List to store compulsions
+class _FirstObsessionsPageState extends State<FirstObsessionsPage> {
+  final List<String> _compulsions = []; 
   final TextEditingController _controller = TextEditingController();
 
   void _addCompulsion(String compulsion) {
@@ -29,13 +33,16 @@ class _ManageCompulsionsScreenState extends State<ManageCompulsionsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Manage My Compulsions',
+          'Manage My Obsessions',
           style: TextStyle(color: Colors.brown),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.brown),
           onPressed: () {
-            Navigator.pop(context); // Navigate back to the previous page
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
           },
         ),
         backgroundColor: Theme.of(context).colorScheme.surface,
@@ -46,18 +53,18 @@ class _ManageCompulsionsScreenState extends State<ManageCompulsionsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Track and manage your compulsions below:',
+              'List all of your obsessions, even the scariest ones.',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Colors.brown,
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 30),
             TextField(
               controller: _controller,
               decoration: InputDecoration(
-                labelText: 'Add a new compulsion',
+                labelText: 'Add a new obsession',
                 labelStyle: const TextStyle(color: Colors.brown),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -69,7 +76,7 @@ class _ManageCompulsionsScreenState extends State<ManageCompulsionsScreen> {
               ),
               onSubmitted: (value) => _addCompulsion(value),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 5),
             Expanded(
               child: _compulsions.isEmpty
                   ? Center(
@@ -105,6 +112,32 @@ class _ManageCompulsionsScreenState extends State<ManageCompulsionsScreen> {
                         );
                       },
                     ),
+            ),
+            MyButton(
+              text: 'Next',
+              onTap: () {
+                if (_compulsions.isNotEmpty) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SecondObsessionsPage(),
+                    ),
+                  );
+                }
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Center(
+                child: Text(
+                  'Version 1.0.1',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ),
             ),
           ],
         ),

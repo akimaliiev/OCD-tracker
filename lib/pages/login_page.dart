@@ -20,19 +20,19 @@ class LoginPage extends StatelessWidget {
         _passwordController.text,
       );
     } catch (e) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Login Failed'),
-          content: Text(e.toString()),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
+      // showDialog(
+      //   context: context,
+      //   builder: (context) => AlertDialog(
+      //     title: Text('Login Failed'),
+      //     content: Text(e.toString()),
+      //     actions: [
+      //       TextButton(
+      //         onPressed: () => Navigator.pop(context),
+      //         child: const Text('OK'),
+      //       ),
+      //     ],
+      //   ),
+      // );
     }
   }
 
