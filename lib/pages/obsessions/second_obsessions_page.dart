@@ -3,7 +3,8 @@ import 'package:ocr_2/components/my_button.dart';
 import 'package:ocr_2/pages/obsessions/third_obsessions_page.dart';
 
 class SecondObsessionsPage extends StatelessWidget {
-  final List<String> _compulsions = []; // List to store compulsions
+  final List<String> obsessions; 
+  SecondObsessionsPage({required this.obsessions});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +50,7 @@ class SecondObsessionsPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ThirdObsessionsPage(compulsions: _compulsions), // Pass the required compulsions list
+                    builder: (context) => ThirdObsessionsPage(obsessions: obsessions), // Pass the required compulsions list
                   ),
                 );
               },),

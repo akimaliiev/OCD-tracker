@@ -3,9 +3,9 @@ import 'package:intl/intl.dart'; // Add this package for date formatting
 import 'package:ocr_2/components/my_button.dart';
 
 class ThirdObsessionsPage extends StatefulWidget {
-  final List<String> compulsions; // List of compulsions passed from the previous screen
+  final List<String> obsessions; // List of compulsions passed from the previous screen
 
-  ThirdObsessionsPage({required this.compulsions});
+  ThirdObsessionsPage({required this.obsessions});
 
   @override
   _ThirdObsessionsPageState createState() => _ThirdObsessionsPageState();
@@ -100,7 +100,7 @@ class _ThirdObsessionsPageState extends State<ThirdObsessionsPage> {
               value: _selectedCompulsion,
               hint: const Text('Choose a compulsion'),
               isExpanded: true,
-              items: widget.compulsions.map((String compulsion) {
+              items: widget.obsessions.map((String compulsion) {
                 return DropdownMenuItem<String>(
                   value: compulsion,
                   child: Text(compulsion),

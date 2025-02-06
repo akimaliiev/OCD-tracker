@@ -207,15 +207,16 @@ class _TimerPageState extends State<TimerPage> {
                 });
               },
             ),
-const Text(
-              'Set the time period:',
+            const Text(
+              'Set the time periodй:',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Colors.brown,
               ),
             ),
-            const SizedBox(height: 10),            DropdownButton<String>(
+            const SizedBox(height: 10),           
+            DropdownButton<String>(
               value: _selectedTime,
               hint: const Text("Choose"),
               items: [

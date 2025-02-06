@@ -10,13 +10,13 @@ class FirstObsessionsPage extends StatefulWidget {
 }
 
 class _FirstObsessionsPageState extends State<FirstObsessionsPage> {
-  final List<String> _compulsions = []; 
+  final List<String> _obsessions = []; 
   final TextEditingController _controller = TextEditingController();
 
   void _addCompulsion(String compulsion) {
     if (compulsion.isNotEmpty) {
       setState(() {
-        _compulsions.add(compulsion);
+        _obsessions.add(compulsion);
       });
       _controller.clear();
     }
@@ -24,7 +24,7 @@ class _FirstObsessionsPageState extends State<FirstObsessionsPage> {
 
   void _removeCompulsion(int index) {
     setState(() {
-      _compulsions.removeAt(index);
+      _obsessions.removeAt(index);
     });
   }
 
@@ -78,7 +78,7 @@ class _FirstObsessionsPageState extends State<FirstObsessionsPage> {
             ),
             const SizedBox(height: 5),
             Expanded(
-              child: _compulsions.isEmpty
+              child: _obsessions.isEmpty
                   ? Center(
                       child: const Text(
                         'No compulsions added yet. Start by adding one!',
@@ -87,7 +87,7 @@ class _FirstObsessionsPageState extends State<FirstObsessionsPage> {
                       ),
                     )
                   : ListView.builder(
-                      itemCount: _compulsions.length,
+                      itemCount: _obsessions.length,
                       itemBuilder: (context, index) {
                         return Card(
                           shape: RoundedRectangleBorder(
@@ -97,7 +97,7 @@ class _FirstObsessionsPageState extends State<FirstObsessionsPage> {
                           margin: const EdgeInsets.symmetric(vertical: 8),
                           child: ListTile(
                             title: Text(
-                              _compulsions[index],
+                              _obsessions[index],
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -116,11 +116,11 @@ class _FirstObsessionsPageState extends State<FirstObsessionsPage> {
             MyButton(
               text: 'Next',
               onTap: () {
-                if (_compulsions.isNotEmpty) {
+                if (_obsessions.isNotEmpty) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SecondObsessionsPage(),
+                      builder: (context) => SecondObsessionsPage(obsessions: _obsessions),
                     ),
                   );
                 }
