@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Add this package for date formatting
+import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Add this import for Firebase Authentication
 import 'package:ocr_2/components/my_button.dart';
+import 'saved_obsessions_page.dart'; // Import the SavedObsessionsPage
 
 class ThirdObsessionsPage extends StatefulWidget {
-  final List<String> obsessions; // List of compulsions passed from the previous screen
+  final List<String> obsessions; // List of obsessions passed from the previous screen
 
   ThirdObsessionsPage({required this.obsessions});
 
@@ -50,27 +53,73 @@ class _ThirdObsessionsPageState extends State<ThirdObsessionsPage> {
     });
   }
 
-  void _saveData() {
-    if (_selectedCompulsion != null) {
-      List<Map<String, String>> planningData = _planningControllers.map((controllers) {
-        return {
-          'action': controllers['action']!.text,
-          'date': controllers['date']!.text,
-          'comments': controllers['comments']!.text,
-        };
-      }).toList();
+  Future<void> _saveData() async {
+  final user = FirebaseAuth.instance.currentUser; // Get the current authenticated user
+  if (user == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Please sign in to save data.')),
+    );
+    return;
+  }
 
-      print('Selected compulsion: $_selectedCompulsion');
-      print('Planning data: $planningData');
+  final userId = user.uid; // Get the user's UID
+
+  if (_selectedCompulsion != null) {
+    // Filter out empty actions
+    List<Map<String, String>> planningData = _planningControllers
+        .where((controllers) => controllers['action']!.text.isNotEmpty) // Skip empty actions
+        .map((controllers) {
+      return {
+        'action': controllers['action']!.text,
+        'date': controllers['date']!.text,
+        'comments': controllers['comments']!.text,
+      };
+    }).toList();
+
+    if (planningData.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please add at least one valid action.')),
+      );
+      return;
+    }
+
+    try {
+      // Save data to Firestore under the user's UID
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(userId)
+          .collection('obsessions')
+          .add({
+        'compulsion': _selectedCompulsion,
+        'planningData': planningData,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+
+      // Clear all controllers after saving
+      _clearControllers();
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Data saved successfully!')),
       );
-    } else {
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a compulsion first!')),
+        SnackBar(content: Text('Error saving data: $e')),
       );
     }
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Please select a compulsion first!')),
+    );
   }
+}
+
+void _clearControllers() {
+  for (var controllers in _planningControllers) {
+    controllers['action']!.clear();
+    controllers['date']!.clear();
+    controllers['comments']!.clear();
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +129,25 @@ class _ThirdObsessionsPageState extends State<ThirdObsessionsPage> {
           'Plan Your Actions',
           style: TextStyle(color: Colors.brown),
         ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.brown),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.list, color: Colors.brown),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SavedObsessionsPage(),
+                ),
+              );
+            },
+          ),
+        ],
         backgroundColor: Theme.of(context).colorScheme.surface,
       ),
       body: Padding(

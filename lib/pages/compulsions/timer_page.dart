@@ -157,6 +157,17 @@ class _TimerPageState extends State<TimerPage> {
           'Delay Your Compulsion',
           style: TextStyle(color: Colors.brown),
         ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.brown),
+          onPressed: () {
+            Navigator.pop(context);
+            // Navigator.pushReplacement(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => FirstCompulsionsPage()),
+            // );
+          },
+        ),
+        
         backgroundColor: Theme.of(context).colorScheme.surface,
       ),
       body: Padding(

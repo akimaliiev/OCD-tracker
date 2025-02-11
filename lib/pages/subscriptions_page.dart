@@ -35,24 +35,21 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
   }
 
   void _loadTrialStatus() async {
-  DateTime? trialStartDate = await AuthService().getTrialStartDate();
-  if (trialStartDate != null) {
-    setState(() {
-      int daysElapsed = DateTime.now().difference(trialStartDate).inDays;
-      remainingDays = trialDuration - daysElapsed;
-      if (remainingDays > 0) {
-        trialStatus = "Your Trial Expires in $remainingDays Days!";
-      } else {
-        trialStatus = "Your Trial Has Expired";
-      }
-    });
-  } else {
-    setState(() {
-      trialStatus = "No trial data found. Please contact support.";
-    });
+    DateTime? trialStartDate = await AuthService().getTrialStartDate();
+    if (trialStartDate != null) {
+      setState(() {
+        int daysElapsed = DateTime.now().difference(trialStartDate).inDays;
+        remainingDays = trialDuration - daysElapsed;
+        trialStatus = remainingDays > 0
+            ? "Your Trial Expires in $remainingDays Days!"
+            : "Your Trial Has Expired";
+      });
+    } else {
+      setState(() {
+        trialStatus = "No trial data found. Please contact support.";
+      });
+    }
   }
-}
-
 
   void _checkSubscriptionStatus() async {
     bool subscribed = await AuthService().isUserSubscribed();
@@ -105,6 +102,12 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
           'Manage My Subscriptions',
           style: TextStyle(color: Colors.brown),
         ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.brown),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         backgroundColor: Theme.of(context).colorScheme.surface,
         iconTheme: const IconThemeData(color: Colors.brown),
       ),
@@ -152,19 +155,6 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                 ],
               ),
             ],
-            // const Spacer(),
-            // Align(
-            //   alignment: Alignment.bottomLeft,
-            //   child: TextButton(
-            //     onPressed: () {
-            //       Navigator.pop(context);
-            //     },
-            //     child: const Text(
-            //       '← Back',
-            //       style: TextStyle(color: Colors.brown, fontSize: 16),
-            //     ),
-            //   ),
-            // )
           ],
         ),
       ),
@@ -180,6 +170,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
       onTap: onTap,
       child: Container(
         width: 150,
+        height: 150, 
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -194,7 +185,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
           ],
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center, 
           children: [
             Text(
               plan,

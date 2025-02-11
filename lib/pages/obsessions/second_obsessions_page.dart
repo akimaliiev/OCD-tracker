@@ -14,6 +14,12 @@ class SecondObsessionsPage extends StatelessWidget {
           'Face Your Fears',
           style: TextStyle(color: Colors.brown),
         ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.brown),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         backgroundColor: Theme.of(context).colorScheme.surface,
       ),
       body: Padding(

@@ -81,7 +81,7 @@ class _FirstObsessionsPageState extends State<FirstObsessionsPage> {
               child: _obsessions.isEmpty
                   ? Center(
                       child: const Text(
-                        'No compulsions added yet. Start by adding one!',
+                        'No obsessions added yet. Start by adding one!',
                         style: TextStyle(color: Colors.brown, fontSize: 16),
                         textAlign: TextAlign.center,
                       ),

@@ -29,7 +29,7 @@ class MyDrawer extends StatelessWidget {
               DrawerHeader(
                 child: Center(
                   child: Image.asset(
-                    '/Users/akimaliev/VSProjects/mio_1/lib/images/potato.png',
+                    'assets/images/ocr.png',
                     width: 120,
                     height: 120,
                   ),
