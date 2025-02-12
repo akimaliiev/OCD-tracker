@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ocr_2/components/my_button.dart';
 import 'package:ocr_2/pages/compulsions/first_compulsions_page.dart';
 import 'package:ocr_2/pages/compulsions/timer_page.dart';
+import 'package:ocr_2/pages/home_page.dart';
 
 class SecondCompulsionsPage extends StatefulWidget {
   @override
@@ -39,10 +40,10 @@ class _SecondCompulsionsPageState extends State<SecondCompulsionsPage> {
           icon: const Icon(Icons.arrow_back, color: Colors.brown),
           onPressed: () {
             Navigator.pop(context);
-            // Navigator.pushReplacement(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => FirstCompulsionsPage()),
-            // );
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
           },
         ),
         backgroundColor: Theme.of(context).colorScheme.surface,

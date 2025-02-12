@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:ocr_2/components/my_button.dart';
-import 'package:ocr_2/services/notification_service.dart';
+import 'package:ocr_2/pages/home_page.dart';
 
 class TimerPage extends StatefulWidget {
   final List<String> compulsions;
@@ -161,13 +161,12 @@ class _TimerPageState extends State<TimerPage> {
           icon: const Icon(Icons.arrow_back, color: Colors.brown),
           onPressed: () {
             Navigator.pop(context);
-            // Navigator.pushReplacement(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => FirstCompulsionsPage()),
-            // );
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
           },
         ),
-        
         backgroundColor: Theme.of(context).colorScheme.surface,
       ),
       body: Padding(
@@ -184,16 +183,6 @@ class _TimerPageState extends State<TimerPage> {
               ),
             ),
             const SizedBox(height: 20),
-            // const Text(
-            //   "Instead of acting on a compulsion immediately, try telling yourself:\n"
-            //   '"I’ll do it, but not just yet."\n\n'
-            //   "Set a timer for the duration you choose, and during that time, shift your focus to something else—take a few deep breaths, listen to your favorite song, or engage in a calming activity.\n\n"
-            //   "This exercise helps create space between the urge and the action, giving your brain a chance to realize you don’t have to act on the compulsion.",
-            //   style: TextStyle(
-            //     fontSize: 16,
-            //     color: Colors.brown,
-            //   ),
-            // ),
             const Text(
               'Choose which one you want to delay:',
               style: TextStyle(
@@ -203,34 +192,34 @@ class _TimerPageState extends State<TimerPage> {
               ),
             ),
             const SizedBox(height: 10),
-            DropdownButton<String>(
+            // Advanced Dropdown for Compulsions
+            _buildAdvancedDropdown(
+              context,
               value: _selectedCompulsion,
-              hint: const Text("Choose"),
-              items: widget.compulsions
-                  .map((compulsion) => DropdownMenuItem<String>(
-                        value: compulsion,
-                        child: Text(compulsion),
-                      ))
-                  .toList(),
-              onChanged: (value) {
+              hint: "Choose",
+              items: widget.compulsions,
+              onSelected: (value) {
                 setState(() {
                   _selectedCompulsion = value;
                 });
               },
             ),
+            const SizedBox(height: 20),
             const Text(
-              'Set the time periodй:',
+              'Set the time period:',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Colors.brown,
               ),
             ),
-            const SizedBox(height: 10),           
-            DropdownButton<String>(
+            const SizedBox(height: 10),
+            // Advanced Dropdown for Time
+            _buildAdvancedDropdown(
+              context,
               value: _selectedTime,
-              hint: const Text("Choose"),
-              items: [
+              hint: "Choose",
+              items: const [
                 '1 minute',
                 '2 minutes',
                 '5 minutes',
@@ -242,11 +231,8 @@ class _TimerPageState extends State<TimerPage> {
                 '1 hour',
                 '2 hours',
                 '3 hours'
-              ].map((time) => DropdownMenuItem<String>(
-                    value: time,
-                    child: Text(time),
-                  )).toList(),
-              onChanged: (value) {
+              ],
+              onSelected: (value) {
                 setState(() {
                   _selectedTime = value;
                 });
@@ -268,12 +254,53 @@ class _TimerPageState extends State<TimerPage> {
               child: MyButton(
                 text: _isTimerRunning ? 'Stop' : 'Start',
                 onTap: () {
-                  //NotificationService().showNotification(title: 'Great job!', body: 'Timer is out.');
                   _startStopTimer();
                 },
               ),
             ),
             const SizedBox(height: 40),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Advanced Dropdown Widget
+  Widget _buildAdvancedDropdown(
+    BuildContext context, {
+    required String? value,
+    required String hint,
+    required List<String> items,
+    required Function(String?) onSelected,
+  }) {
+    return PopupMenuButton<String>(
+      onSelected: onSelected,
+      itemBuilder: (context) {
+        return items.map((item) {
+          return PopupMenuItem<String>(
+            value: item,
+            child: Text(
+              item,
+              style: const TextStyle(fontSize: 16, color: Colors.brown),
+            ),
+          );
+        }).toList();
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: Colors.grey[300], // Light grey background
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.brown, width: 1),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              value ?? hint,
+              style: const TextStyle(fontSize: 16, color: Colors.brown),
+            ),
+            const Icon(Icons.arrow_drop_down, color: Colors.brown),
           ],
         ),
       ),

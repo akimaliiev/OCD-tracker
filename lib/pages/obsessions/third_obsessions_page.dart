@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Add this import for Firebase Authentication
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ocr_2/components/my_button.dart';
-import 'saved_obsessions_page.dart'; // Import the SavedObsessionsPage
+import 'package:ocr_2/pages/home_page.dart';
+import 'saved_obsessions_page.dart';
 
 class ThirdObsessionsPage extends StatefulWidget {
-  final List<String> obsessions; // List of obsessions passed from the previous screen
+  final List<String> obsessions;
 
   ThirdObsessionsPage({required this.obsessions});
 
@@ -16,18 +17,17 @@ class ThirdObsessionsPage extends StatefulWidget {
 
 class _ThirdObsessionsPageState extends State<ThirdObsessionsPage> {
   String? _selectedCompulsion;
-  List<Map<String, TextEditingController>> _planningControllers = []; // Use controllers for inputs
+  List<Map<String, TextEditingController>> _planningControllers = [];
 
   @override
   void initState() {
     super.initState();
-    // Initialize 4 rows of data with today's date
     _planningControllers = List.generate(
       4,
       (index) => {
         'action': TextEditingController(),
         'date': TextEditingController(
-            text: DateFormat('yyyy-MM-dd').format(DateTime.now())), // Today's date
+            text: DateFormat('yyyy-MM-dd').format(DateTime.now())),
         'comments': TextEditingController(),
       },
     );
@@ -35,7 +35,6 @@ class _ThirdObsessionsPageState extends State<ThirdObsessionsPage> {
 
   @override
   void dispose() {
-    // Dispose of all controllers
     for (var controllers in _planningControllers) {
       controllers.values.forEach((controller) => controller.dispose());
     }
@@ -47,79 +46,76 @@ class _ThirdObsessionsPageState extends State<ThirdObsessionsPage> {
       _planningControllers.add({
         'action': TextEditingController(),
         'date': TextEditingController(
-            text: DateFormat('yyyy-MM-dd').format(DateTime.now())), // Today's date
+            text: DateFormat('yyyy-MM-dd').format(DateTime.now())),
         'comments': TextEditingController(),
       });
     });
   }
 
   Future<void> _saveData() async {
-  final user = FirebaseAuth.instance.currentUser; // Get the current authenticated user
-  if (user == null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Please sign in to save data.')),
-    );
-    return;
-  }
-
-  final userId = user.uid; // Get the user's UID
-
-  if (_selectedCompulsion != null) {
-    // Filter out empty actions
-    List<Map<String, String>> planningData = _planningControllers
-        .where((controllers) => controllers['action']!.text.isNotEmpty) // Skip empty actions
-        .map((controllers) {
-      return {
-        'action': controllers['action']!.text,
-        'date': controllers['date']!.text,
-        'comments': controllers['comments']!.text,
-      };
-    }).toList();
-
-    if (planningData.isEmpty) {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please add at least one valid action.')),
+        const SnackBar(content: Text('Please sign in to save data.')),
       );
       return;
     }
 
-    try {
-      // Save data to Firestore under the user's UID
-      await FirebaseFirestore.instance
-          .collection('Users')
-          .doc(userId)
-          .collection('obsessions')
-          .add({
-        'compulsion': _selectedCompulsion,
-        'planningData': planningData,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
+    final userId = user.uid;
 
-      // Clear all controllers after saving
-      _clearControllers();
+    if (_selectedCompulsion != null) {
+      List<Map<String, String>> planningData = _planningControllers
+          .where((controllers) => controllers['action']!.text.isNotEmpty)
+          .map((controllers) {
+        return {
+          'action': controllers['action']!.text,
+          'date': controllers['date']!.text,
+          'comments': controllers['comments']!.text,
+        };
+      }).toList();
 
+      if (planningData.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please add at least one valid action.')),
+        );
+        return;
+      }
+
+      try {
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(userId)
+            .collection('obsessions')
+            .add({
+          'compulsion': _selectedCompulsion,
+          'planningData': planningData,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+
+        _clearControllers();
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Data saved successfully!')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error saving data: $e')),
+        );
+      }
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Data saved successfully!')),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error saving data: $e')),
+        const SnackBar(content: Text('Please select a compulsion first!')),
       );
     }
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Please select a compulsion first!')),
-    );
   }
-}
 
-void _clearControllers() {
-  for (var controllers in _planningControllers) {
-    controllers['action']!.clear();
-    controllers['date']!.clear();
-    controllers['comments']!.clear();
+  void _clearControllers() {
+    for (var controllers in _planningControllers) {
+      controllers['action']!.clear();
+      controllers['date']!.clear();
+      controllers['comments']!.clear();
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -133,11 +129,15 @@ void _clearControllers() {
           icon: const Icon(Icons.arrow_back, color: Colors.brown),
           onPressed: () {
             Navigator.pop(context);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
           },
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.list, color: Colors.brown),
+            icon: const Icon(Icons.history, color: Colors.brown),
             onPressed: () {
               Navigator.push(
                 context,
@@ -164,17 +164,13 @@ void _clearControllers() {
               ),
             ),
             const SizedBox(height: 10),
-            DropdownButton<String>(
+            // Advanced Dropdown for Compulsions
+            _buildAdvancedDropdown(
+              context,
               value: _selectedCompulsion,
-              hint: const Text('Choose a compulsion'),
-              isExpanded: true,
-              items: widget.obsessions.map((String compulsion) {
-                return DropdownMenuItem<String>(
-                  value: compulsion,
-                  child: Text(compulsion),
-                );
-              }).toList(),
-              onChanged: (value) {
+              hint: 'Choose a compulsion',
+              items: widget.obsessions,
+              onSelected: (value) {
                 setState(() {
                   _selectedCompulsion = value;
                 });
@@ -283,6 +279,48 @@ void _clearControllers() {
                 ),
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Advanced Dropdown Widget
+  Widget _buildAdvancedDropdown(
+    BuildContext context, {
+    required String? value,
+    required String hint,
+    required List<String> items,
+    required Function(String?) onSelected,
+  }) {
+    return PopupMenuButton<String>(
+      onSelected: onSelected,
+      itemBuilder: (context) {
+        return items.map((item) {
+          return PopupMenuItem<String>(
+            value: item,
+            child: Text(
+              item,
+              style: const TextStyle(fontSize: 16, color: Colors.brown),
+            ),
+          );
+        }).toList();
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: Colors.grey[300], // Light grey background
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.brown, width: 1),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              value ?? hint,
+              style: const TextStyle(fontSize: 16, color: Colors.brown),
+            ),
+            const Icon(Icons.arrow_drop_down, color: Colors.brown),
           ],
         ),
       ),

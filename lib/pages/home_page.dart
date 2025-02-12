@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:ocr_2/themes/dark_mode.dart';
+import 'package:provider/provider.dart';
 import 'package:ocr_2/auth/auth_service.dart';
 import 'package:ocr_2/components/my_drawer.dart';
 import 'package:ocr_2/pages/anxiety_diary_page.dart';
 import 'package:ocr_2/pages/compulsions/first_compulsions_page.dart';
 import 'package:ocr_2/pages/obsessions/first_obsessions_page.dart';
+import 'package:ocr_2/themes/theme_provider.dart';
 
 class HomePage extends StatelessWidget {
   void logout() {
@@ -13,32 +16,39 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeProvider>(context).themeData;
+    
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: theme.colorScheme.surface,
           leading: Builder(
             builder: (context) => IconButton(
-              onPressed: Scaffold.of(context).openDrawer, 
+              onPressed: Scaffold.of(context).openDrawer,
               icon: const Icon(
-                Icons.account_circle, 
+                Icons.account_circle,
                 size: 40,
                 color: Colors.brown,
-              )
-          ),),
+              ),
+            ),
+          ),
           title: const Text(
             'OCD Tracker',
             style: TextStyle(color: Colors.brown),
           ),
           // actions: [
           //   IconButton(
-          //     icon: const Icon(Icons.logout),
-          //     color: Colors.brown,
-          //     onPressed: logout,
+          //     icon: Icon(
+          //       theme == darkMode ? Icons.dark_mode : Icons.light_mode,
+          //       color: Colors.brown,
+          //     ),
+          //     onPressed: () => Provider.of<ThemeProvider>(context, listen: false).toggleThemes(),
           //   ),
           // ],
         ),
         drawer: const MyDrawer(),
+        backgroundColor: theme.colorScheme.surface,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Center(
@@ -76,36 +86,43 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 30),
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  spacing: 20,
-                  runSpacing: 10,
-                  children: [
-                    _buildFeatureButton(
-                      context,
-                      icon: Icons.hourglass_empty,
-                      label: 'Manage My Compulsions',
-                      routePage: FirstCompulsionsPage(),
-                    ),
-                    _buildFeatureButton(
-                      context,
-                      icon: Icons.psychology,
-                      label: 'Manage My Obsessions',
-                      routePage: FirstObsessionsPage(),
-                    ),
-                    _buildFeatureButton(
-                      context,
-                      icon: Icons.book,
-                      label: 'Anxiety Diary',
-                      routePage: AnxietyDiaryPage(),
-                    ),
-                  ],
-                ),
+                _buildFeatureButtons(context),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildFeatureButtons(BuildContext context) {
+    return Column(
+      children: [
+        _buildFeatureButton(
+          context,
+          icon: Icons.hourglass_empty,
+          label: 'Manage My Compulsions',
+          routePage: FirstCompulsionsPage(),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildFeatureButton(
+              context,
+              icon: Icons.psychology,
+              label: 'Manage My Obsessions',
+              routePage: FirstObsessionsPage(),
+            ),
+            const SizedBox(width: 20),
+            _buildFeatureButton(
+              context,
+              icon: Icons.book,
+              label: 'Anxiety Diary',
+              routePage: AnxietyDiaryPage(),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
