@@ -8,16 +8,22 @@ import 'package:ocr_2/pages/compulsions/first_compulsions_page.dart';
 import 'package:ocr_2/pages/obsessions/first_obsessions_page.dart';
 import 'package:ocr_2/themes/theme_provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   void logout() {
     final auth = AuthService();
     auth.signOut();
   }
 
+
   @override
   Widget build(BuildContext context) {
     final theme = Provider.of<ThemeProvider>(context).themeData;
-    
+
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
@@ -37,15 +43,6 @@ class HomePage extends StatelessWidget {
             'OCD Tracker',
             style: TextStyle(color: Colors.brown),
           ),
-          // actions: [
-          //   IconButton(
-          //     icon: Icon(
-          //       theme == darkMode ? Icons.dark_mode : Icons.light_mode,
-          //       color: Colors.brown,
-          //     ),
-          //     onPressed: () => Provider.of<ThemeProvider>(context, listen: false).toggleThemes(),
-          //   ),
-          // ],
         ),
         drawer: const MyDrawer(),
         backgroundColor: theme.colorScheme.surface,
@@ -98,23 +95,24 @@ class HomePage extends StatelessWidget {
   Widget _buildFeatureButtons(BuildContext context) {
     return Column(
       children: [
-        _buildFeatureButton(
+        _buildAnimatedFeatureButton(
           context,
           icon: Icons.hourglass_empty,
           label: 'Manage My Compulsions',
           routePage: FirstCompulsionsPage(),
         ),
+        SizedBox(height: 20,),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildFeatureButton(
+            _buildAnimatedFeatureButton(
               context,
               icon: Icons.psychology,
               label: 'Manage My Obsessions',
               routePage: FirstObsessionsPage(),
             ),
             const SizedBox(width: 20),
-            _buildFeatureButton(
+            _buildAnimatedFeatureButton(
               context,
               icon: Icons.book,
               label: 'Anxiety Diary',
@@ -126,27 +124,57 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildFeatureButton(BuildContext context,
-      {required IconData icon, required String label, required Widget routePage}) {
-    return Column(
-      children: [
-        IconButton(
-          icon: Icon(icon, size: 40, color: Colors.brown),
-          onPressed: () {
-            Navigator.pop(context);
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => routePage),
-            );
-          },
-        ),
-        const SizedBox(height: 5),
-        Text(
-          label,
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 14, color: Colors.brown),
-        ),
-      ],
+  Widget _buildAnimatedFeatureButton(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required Widget routePage,
+  }) {
+    return GestureDetector(
+      onTapDown: (_) {
+        _animateButton(context);
+        Future.delayed(const Duration(milliseconds: 200), () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => routePage),
+          );
+        });
+      },
+      child: Column(
+        children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
+            transform: Matrix4.identity()..scale(_buttonScale),
+            child: Icon(
+              icon,
+              size: 40,
+              color: Colors.brown,
+            ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 14, color: Colors.brown),
+          ),
+        ],
+      ),
     );
+  }
+
+  double _buttonScale = 1.0;
+
+  void _animateButton(BuildContext context) {
+    setState(() {
+      _buttonScale = 0.9; // Scale down the button
+    });
+
+    // Reset the scale after a short delay
+    Future.delayed(const Duration(milliseconds: 200), () {
+      setState(() {
+        _buttonScale = 1.0; // Scale back to normal
+      });
+    });
   }
 }

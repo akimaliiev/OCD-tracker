@@ -29,7 +29,8 @@ class MyDrawer extends StatelessWidget {
               DrawerHeader(
                 child: Center(
                   child: Image.asset(
-                    'assets/images/ocr.png',
+                    'assets/images/ocd.png',
+                    color: Colors.brown,
                     width: 120,
                     height: 120,
                   ),

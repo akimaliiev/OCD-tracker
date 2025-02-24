@@ -44,18 +44,19 @@ class LoginPage extends StatelessWidget {
         child:  Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.message, 
-              size: 70,
-              color: Theme.of(context).colorScheme.primary,
-            ),
+             Image.asset(
+                    'assets/images/ocd.png',
+                    color: Colors.brown,
+                    width: 150,
+                    height: 150,
+                  ),
 
-            const SizedBox(height: 50,),
+            const SizedBox(height: 20,),
 
             Text(
               "Welcome back! You've been missed",
               style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
+                color: Colors.grey[800],
                 fontSize: 16,
               ),
             ),

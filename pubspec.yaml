@@ -28,5 +28,5 @@ dev_dependencies:
 
 flutter:
   assets: 
-    - assets/images/ocr.png
+    - assets/images/ocd.png
   uses-material-design: true
