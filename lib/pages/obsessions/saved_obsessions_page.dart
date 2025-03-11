@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ocr_2/pages/obsessions/third_obsessions_page.dart';
 
 class SavedObsessionsPage extends StatelessWidget {
   @override
@@ -80,20 +81,41 @@ class SavedObsessionsPage extends StatelessWidget {
                     'Actions: ${(data['planningData'] as List).length}',
                     style: TextStyle(color: Colors.grey[600]),
                   ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete, color: Colors.red),
-                    onPressed: () async {
-                      // Delete the record
-                      await FirebaseFirestore.instance
-                          .collection('Users')
-                          .doc(userId)
-                          .collection('obsessions')
-                          .doc(record.id)
-                          .delete();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Record deleted successfully!')),
-                      );
-                    },
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.edit, color: Colors.brown),
+                        onPressed: () {
+                          // Navigate to the edit screen
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ThirdObsessionsPage(
+                                obsessions: [],
+                                recordId:record.id,
+                                preFilledData:data
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete, color: const Color.fromARGB(255, 150, 33, 25)),
+                        onPressed: () async {
+                          // Delete the record
+                          await FirebaseFirestore.instance
+                              .collection('Users')
+                              .doc(userId)
+                              .collection('obsessions')
+                              .doc(record.id)
+                              .delete();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Record deleted successfully!')),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                   children: [
                     Padding(

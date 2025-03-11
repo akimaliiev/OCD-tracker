@@ -8,8 +8,10 @@ import 'saved_obsessions_page.dart';
 
 class ThirdObsessionsPage extends StatefulWidget {
   final List<String> obsessions;
+  final String? recordId;
+  final Map<String, dynamic>? preFilledData;
 
-  ThirdObsessionsPage({required this.obsessions});
+  ThirdObsessionsPage({required this.obsessions, this.recordId, this.preFilledData});
 
   @override
   _ThirdObsessionsPageState createState() => _ThirdObsessionsPageState();
@@ -22,6 +24,24 @@ class _ThirdObsessionsPageState extends State<ThirdObsessionsPage> {
   @override
   void initState() {
     super.initState();
+    if(widget.preFilledData != null) {
+      _selectedCompulsion = widget.preFilledData!['compulsion'];
+      _planningControllers = (widget.preFilledData!['planningData'] as List).map((plan) => {
+          'action': TextEditingController(text: plan['action']),
+          'date': TextEditingController(text: plan['date']),
+          'comments': TextEditingController(text: plan['comments']),
+      }).toList();
+      
+    } else {
+      _planningControllers = List.generate(
+        4,
+        (index) => {
+          'action': TextEditingController(),
+          'date': TextEditingController(text: DateFormat('yyyy-MM-dd').format(DateTime.now())),
+          'comments': TextEditingController(),
+        },
+      );
+    }
     _planningControllers = List.generate(
       4,
       (index) => {
@@ -82,21 +102,35 @@ class _ThirdObsessionsPageState extends State<ThirdObsessionsPage> {
       }
 
       try {
-        await FirebaseFirestore.instance
-            .collection('Users')
-            .doc(userId)
-            .collection('obsessions')
-            .add({
-          'compulsion': _selectedCompulsion,
-          'planningData': planningData,
-          'timestamp': FieldValue.serverTimestamp(),
-        });
+        if (widget.recordId != null) {
+          await FirebaseFirestore.instance
+              .collection('Users')
+              .doc(userId)
+              .collection('obsessions')
+              .doc(widget.recordId)
+              .update({
+            'compulsion': _selectedCompulsion,
+            'planningData': planningData,
+            'timestamp': FieldValue.serverTimestamp(),
+          });
+        } else {
+          await FirebaseFirestore.instance
+              .collection('Users')
+              .doc(userId)
+              .collection('obsessions')
+              .add({
+            'compulsion': _selectedCompulsion,
+            'planningData': planningData,
+            'timestamp': FieldValue.serverTimestamp(),
+          });
+        }
 
         _clearControllers();
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Data saved successfully!')),
         );
+        //Navigator.pop(context);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error saving data: $e')),
@@ -168,7 +202,7 @@ class _ThirdObsessionsPageState extends State<ThirdObsessionsPage> {
             _buildAdvancedDropdown(
               context,
               value: _selectedCompulsion,
-              hint: 'Choose a compulsion',
+              hint: 'Choose an obsession',
               items: widget.obsessions,
               onSelected: (value) {
                 setState(() {

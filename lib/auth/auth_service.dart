@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../models/user_model.dart'; 
 
 class AuthService {
@@ -103,5 +104,38 @@ class AuthService {
     } catch (e) {
       print('Error signing out: $e');
     }
+  }
+
+  Future<void> deleteAccount() async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        // Delete the user's document from Firestore
+        await _fireStore.collection("Users").doc(user.uid).delete();
+
+        // Delete the user from Firebase Authentication
+        await user.delete();
+
+        print('Account deleted successfully');
+      } else {
+        throw Exception('No user is currently signed in');
+      }
+    } on FirebaseAuthException catch (e) {
+      print('Error deleting account: $e');
+      throw Exception(e.message ?? 'Failed to delete account');
+    } catch (e) {
+      print('Error deleting account: $e');
+      throw Exception('Failed to delete account');
+    }
+  }
+  signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    if(googleUser == null) return null;
+    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    return await _auth.signInWithCredential(credential);
   }
 }
