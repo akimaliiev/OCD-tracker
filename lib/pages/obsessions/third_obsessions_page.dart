@@ -125,7 +125,7 @@ class _ThirdObsessionsPageState extends State<ThirdObsessionsPage> {
           });
         }
 
-        _clearControllers();
+        //_clearControllers();
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Data saved successfully!')),
