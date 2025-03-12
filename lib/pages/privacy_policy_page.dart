@@ -29,7 +29,7 @@ class PrivacyPolicyPage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             const Text(
-              'Last updated: January 1, 2025',
+              'Last updated: March 11, 2025',
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey,

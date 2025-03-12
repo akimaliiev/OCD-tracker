@@ -116,14 +116,14 @@ class _FirstObsessionsPageState extends State<FirstObsessionsPage> {
             MyButton(
               text: 'Next',
               onTap: () {
-                if (_obsessions.isNotEmpty) {
+                // if (_obsessions.isNotEmpty) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => SecondObsessionsPage(obsessions: _obsessions),
                     ),
                   );
-                }
+                // }
               },
             ),
             Padding(
