@@ -73,8 +73,8 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 10),
                 const Text(
                   'Find peace of mind with our app, designed to help you manage '
-                  'intrusive thoughts and compulsions through proven techniques. '
-                  'Improve the quality of your life with effective exercises, instructions, '
+                  'intrusive thoughts and compulsions through effective techniques. '
+                  'Improve the quality of your life with easy to follow exercises, instructions, '
                   'and progress tracking.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
