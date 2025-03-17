@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:ocr_2/components/my_button.dart';
+import 'package:ocr_2/pages/compulsions/timer_page.dart';
 import 'package:ocr_2/pages/home_page.dart';
 import 'package:ocr_2/pages/compulsions/second_compulsions_page.dart';
 
 class FirstCompulsionsPage extends StatelessWidget {
+  final List<String> compulsions;
+  FirstCompulsionsPage({super.key, required this.compulsions});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +76,7 @@ class FirstCompulsionsPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SecondCompulsionsPage(),
+                    builder: (context) => TimerPage(compulsions: compulsions,),
                   ),
                 );
             }),

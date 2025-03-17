@@ -111,72 +111,72 @@ class RegisterPage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () => AuthService().signInWithGoogle(), 
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      side: BorderSide(color: Colors.grey.shade300),
-                    ),
-                    elevation: 2,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image.asset(
-                        'assets/images/google_logo.png',
-                        height: 44,
-                      ),
-                      // const SizedBox(width: 10),
-                      // const Text(
-                      //   'Sign in with Google',
-                      //   style: TextStyle(
-                      //     color: Colors.black,
-                      //     fontSize: 16,
-                      //     fontWeight: FontWeight.w500,
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () => AuthService().signInWithGoogle(), 
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      side: BorderSide(color: Colors.grey.shade300),
-                    ),
-                    elevation: 2,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image.asset(
-                        'assets/images/apple_logo2.png',
-                        height: 44,
-                      ),
-                      // const SizedBox(width: 10),
-                      // const Text(
-                      //   'Sign in with Google',
-                      //   style: TextStyle(
-                      //     color: Colors.black,
-                      //     fontSize: 16,
-                      //     fontWeight: FontWeight.w500,
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                ),
-              ],
-            )
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     ElevatedButton(
+            //       onPressed: () => AuthService().signInWithGoogle(), 
+            //       style: ElevatedButton.styleFrom(
+            //         backgroundColor: Theme.of(context).colorScheme.secondary,
+            //         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            //         shape: RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.circular(30),
+            //           side: BorderSide(color: Colors.grey.shade300),
+            //         ),
+            //         elevation: 2,
+            //       ),
+            //       child: Row(
+            //         mainAxisSize: MainAxisSize.min,
+            //         children: [
+            //           Image.asset(
+            //             'assets/images/google_logo.png',
+            //             height: 44,
+            //           ),
+            //           // const SizedBox(width: 10),
+            //           // const Text(
+            //           //   'Sign in with Google',
+            //           //   style: TextStyle(
+            //           //     color: Colors.black,
+            //           //     fontSize: 16,
+            //           //     fontWeight: FontWeight.w500,
+            //           //   ),
+            //           // ),
+            //         ],
+            //       ),
+            //     ),
+            //     const SizedBox(width: 10),
+            //     ElevatedButton(
+            //       onPressed: () => AuthService().signInWithGoogle(), 
+            //       style: ElevatedButton.styleFrom(
+            //         backgroundColor: Theme.of(context).colorScheme.secondary,
+            //         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            //         shape: RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.circular(30),
+            //           side: BorderSide(color: Colors.grey.shade300),
+            //         ),
+            //         elevation: 2,
+            //       ),
+            //       child: Row(
+            //         mainAxisSize: MainAxisSize.min,
+            //         children: [
+            //           Image.asset(
+            //             'assets/images/apple_logo2.png',
+            //             height: 44,
+            //           ),
+            //           // const SizedBox(width: 10),
+            //           // const Text(
+            //           //   'Sign in with Google',
+            //           //   style: TextStyle(
+            //           //     color: Colors.black,
+            //           //     fontSize: 16,
+            //           //     fontWeight: FontWeight.w500,
+            //           //   ),
+            //           // ),
+            //         ],
+            //       ),
+            //     ),
+            //   ],
+            // )
           ],
         ),
           

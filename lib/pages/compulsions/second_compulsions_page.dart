@@ -119,7 +119,7 @@ class _SecondCompulsionsPageState extends State<SecondCompulsionsPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => TimerPage(compulsions: _compulsions,),
+                    builder: (context) => FirstCompulsionsPage(compulsions:_compulsions,),
                   ),
                 );
               }

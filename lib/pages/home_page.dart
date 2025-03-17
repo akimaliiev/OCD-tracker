@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ocr_2/pages/compulsions/second_compulsions_page.dart';
 import 'package:ocr_2/themes/dark_mode.dart';
 import 'package:provider/provider.dart';
 import 'package:ocr_2/auth/auth_service.dart';
@@ -99,7 +100,7 @@ class _HomePageState extends State<HomePage> {
           context,
           icon: Icons.hourglass_empty,
           label: 'Manage My Compulsions',
-          routePage: FirstCompulsionsPage(),
+          routePage: SecondCompulsionsPage(),
         ),
         SizedBox(height: 20,),
         Row(
