@@ -24,14 +24,15 @@ class _ThirdObsessionsPageState extends State<ThirdObsessionsPage> {
   @override
   void initState() {
     super.initState();
-    if(widget.preFilledData != null) {
+    if (widget.preFilledData != null) {
       _selectedCompulsion = widget.preFilledData!['compulsion'];
-      _planningControllers = (widget.preFilledData!['planningData'] as List).map((plan) => {
+      _planningControllers = (widget.preFilledData!['planningData'] as List).map((plan) {
+        return {
           'action': TextEditingController(text: plan['action']),
           'date': TextEditingController(text: plan['date']),
           'comments': TextEditingController(text: plan['comments']),
+        };
       }).toList();
-      
     } else {
       _planningControllers = List.generate(
         4,
@@ -42,15 +43,6 @@ class _ThirdObsessionsPageState extends State<ThirdObsessionsPage> {
         },
       );
     }
-    _planningControllers = List.generate(
-      4,
-      (index) => {
-        'action': TextEditingController(),
-        'date': TextEditingController(
-            text: DateFormat('yyyy-MM-dd').format(DateTime.now())),
-        'comments': TextEditingController(),
-      },
-    );
   }
 
   @override
@@ -65,8 +57,7 @@ class _ThirdObsessionsPageState extends State<ThirdObsessionsPage> {
     setState(() {
       _planningControllers.add({
         'action': TextEditingController(),
-        'date': TextEditingController(
-            text: DateFormat('yyyy-MM-dd').format(DateTime.now())),
+        'date': TextEditingController(text: DateFormat('yyyy-MM-dd').format(DateTime.now())),
         'comments': TextEditingController(),
       });
     });
@@ -125,12 +116,10 @@ class _ThirdObsessionsPageState extends State<ThirdObsessionsPage> {
           });
         }
 
-        //_clearControllers();
-
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Data saved successfully!')),
         );
-        //Navigator.pop(context);
+        Navigator.pop(context);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error saving data: $e')),
@@ -140,14 +129,6 @@ class _ThirdObsessionsPageState extends State<ThirdObsessionsPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please select a compulsion first!')),
       );
-    }
-  }
-
-  void _clearControllers() {
-    for (var controllers in _planningControllers) {
-      controllers['action']!.clear();
-      controllers['date']!.clear();
-      controllers['comments']!.clear();
     }
   }
 
@@ -161,13 +142,7 @@ class _ThirdObsessionsPageState extends State<ThirdObsessionsPage> {
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.brown),
-          onPressed: () {
-            Navigator.pop(context);
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
-          },
+          onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
@@ -198,7 +173,6 @@ class _ThirdObsessionsPageState extends State<ThirdObsessionsPage> {
               ),
             ),
             const SizedBox(height: 10),
-            // Advanced Dropdown for Compulsions
             _buildAdvancedDropdown(
               context,
               value: _selectedCompulsion,
@@ -300,26 +274,12 @@ class _ThirdObsessionsPageState extends State<ThirdObsessionsPage> {
               text: 'Save',
               onTap: _saveData,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: Center(
-                child: Text(
-                  '',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       ),
     );
   }
 
-  // Advanced Dropdown Widget
   Widget _buildAdvancedDropdown(
     BuildContext context, {
     required String? value,
@@ -343,7 +303,7 @@ class _ThirdObsessionsPageState extends State<ThirdObsessionsPage> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: Colors.grey[300], // Light grey background
+          color: Colors.grey[300],
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: Colors.brown, width: 1),
         ),

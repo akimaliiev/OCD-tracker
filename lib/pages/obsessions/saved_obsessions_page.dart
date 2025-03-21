@@ -6,7 +6,7 @@ import 'package:ocr_2/pages/obsessions/third_obsessions_page.dart';
 class SavedObsessionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser; // Get the current authenticated user
+    final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       return Scaffold(
         appBar: AppBar(
@@ -19,7 +19,7 @@ class SavedObsessionsPage extends StatelessWidget {
       );
     }
 
-    final userId = user.uid; // Get the user's UID
+    final userId = user.uid;
 
     return Scaffold(
       appBar: AppBar(
@@ -27,18 +27,15 @@ class SavedObsessionsPage extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.surface,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.brown),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
       ),
-      
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('Users')
             .doc(userId)
             .collection('obsessions')
-            .orderBy('timestamp', descending: true) // Sort by timestamp (newest first)
+            .orderBy('timestamp', descending: true)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -87,23 +84,21 @@ class SavedObsessionsPage extends StatelessWidget {
                       IconButton(
                         icon: const Icon(Icons.edit, color: Colors.brown),
                         onPressed: () {
-                          // Navigate to the edit screen
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ThirdObsessionsPage(
-                                obsessions: [],
-                                recordId:record.id,
-                                preFilledData:data
+                                obsessions: [], // Pass the list of obsessions if available
+                                recordId: record.id,
+                                preFilledData: data,
                               ),
                             ),
                           );
                         },
                       ),
                       IconButton(
-                        icon: const Icon(Icons.delete, color: const Color.fromARGB(255, 150, 33, 25)),
+                        icon: const Icon(Icons.delete, color: Color.fromARGB(255, 150, 33, 25)),
                         onPressed: () async {
-                          // Delete the record
                           await FirebaseFirestore.instance
                               .collection('Users')
                               .doc(userId)
