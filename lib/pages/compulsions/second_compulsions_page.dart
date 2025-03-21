@@ -115,14 +115,14 @@ class _SecondCompulsionsPageState extends State<SecondCompulsionsPage> {
                     ),
             ),
             MyButton(text: 'Next', onTap: (){
-              if (_compulsions.isNotEmpty) {
+              // if (_compulsions.isNotEmpty) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => FirstCompulsionsPage(compulsions:_compulsions,),
                   ),
                 );
-              }
+              //}
             }),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
