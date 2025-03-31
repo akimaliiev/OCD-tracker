@@ -138,4 +138,14 @@ class AuthService {
     );
     return await _auth.signInWithCredential(credential);
   }
+  Future<void> saveCompulsion(String compulsion) async {
+  User? user = _auth.currentUser;
+  if (user != null) {
+    DocumentReference userRef = _fireStore.collection("Users").doc(user.uid);
+    await userRef.update({
+      'compulsions': FieldValue.arrayUnion([compulsion])
+    });
+  }
+}
+
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ocr_2/auth/auth_service.dart';
 import 'package:ocr_2/components/my_button.dart';
 import 'package:ocr_2/pages/compulsions/first_compulsions_page.dart';
 import 'package:ocr_2/pages/compulsions/timer_page.dart';
@@ -13,14 +14,16 @@ class _SecondCompulsionsPageState extends State<SecondCompulsionsPage> {
   final List<String> _compulsions = []; // List to store compulsions
   final TextEditingController _controller = TextEditingController();
 
-  void _addCompulsion(String compulsion) {
-    if (compulsion.isNotEmpty) {
-      setState(() {
-        _compulsions.add(compulsion);
-      });
-      _controller.clear();
-    }
+  void _addCompulsion(String compulsion) async {
+  if (compulsion.isNotEmpty) {
+    setState(() {
+      _compulsions.add(compulsion);
+    });
+    _controller.clear();
+    await AuthService().saveCompulsion(compulsion); // Save to Firestore
   }
+}
+
 
   void _removeCompulsion(int index) {
     setState(() {

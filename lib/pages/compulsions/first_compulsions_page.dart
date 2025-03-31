@@ -76,7 +76,7 @@ class FirstCompulsionsPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => TimerPage(compulsions: compulsions,),
+                    builder: (context) => TimerPage(),
                   ),
                 );
             }),
