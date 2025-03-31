@@ -29,7 +29,7 @@ class TermsAndConditionsPage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             const Text(
-              'Effective Date: March 11, 2025',
+              'Effective Date: March 31, 2025',
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
