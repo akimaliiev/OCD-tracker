@@ -96,7 +96,8 @@ class TermsAndConditionsPage extends StatelessWidget {
             const SizedBox(height: 10),
             const Text(
               '6.1 The App offers paid subscriptions once the free trial is over. Fees and billing details will be disclosed prior to purchase.\n'
-              '6.2 All payments are final, except as required by applicable law or expressly stated.',
+              '6.2 All payments are final, except as required by applicable law or expressly stated.\n'
+              '6.3 You can request a refund by contacting us in the Contact Us section of the App.',
               style: TextStyle(fontSize: 16, color: Colors.black),
             ),
             const SizedBox(height: 20),
