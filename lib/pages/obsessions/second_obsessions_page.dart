@@ -28,7 +28,7 @@ class SecondObsessionsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              '✅ The only way to overcome your fears is to face them.',
+              '✅ How to overcome your fears? Try to face them!',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
