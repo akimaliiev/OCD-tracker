@@ -1,0 +1,12 @@
+{
+  "provider": "apple_pay",
+  "data": {
+    "merchantIdentifier": "merchant.com.yourapp",
+    "displayName": "Your App",
+    "merchantCapabilities": ["3DS", "debit", "credit"],
+    "supportedNetworks": ["visa", "masterCard", "amex"],
+    "countryCode": "US",
+    "currencyCode": "USD",
+    "requiredBillingContactFields": ["emailAddress", "name", "phoneNumber", "postalAddress"]
+  }
+}

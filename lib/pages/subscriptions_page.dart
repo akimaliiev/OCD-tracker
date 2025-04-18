@@ -5,6 +5,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ocr_2/services/purchase_service.dart';
+import 'package:pay/pay.dart';
 
 class SubscriptionsPage extends StatefulWidget {
   const SubscriptionsPage({super.key});
@@ -16,9 +17,27 @@ class SubscriptionsPage extends StatefulWidget {
 class _SubscriptionsPageState extends State<SubscriptionsPage> {
   int remainingDays = 0;
   String trialStatus = "Loading...";
-  final int trialDuration = 7; 
+  final int trialDuration = 7;
   bool isSubscribed = false;
   late final Stream<List<PurchaseDetails>> _purchaseUpdates;
+
+  final _googlePayItems = <PaymentItem>[
+    const PaymentItem(
+      label: 'Monthly Plan',
+      amount: '8.90',
+      status: PaymentItemStatus.final_price,
+    ),
+  ];
+
+  final _applePayItems = <PaymentItem>[
+    const PaymentItem(
+      label: 'Monthly Plan',
+      amount: '8.90',
+      status: PaymentItemStatus.final_price,
+    ),
+  ];
+
+  String selectedPlan = ''; // Track selected plan (monthly or annual)
 
   @override
   void initState() {
@@ -94,6 +113,20 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
     }
   }
 
+  void onGooglePayResult(paymentResult) {
+    _updateSubscriptionStatus();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Google Pay successful! Subscription activated.")),
+    );
+  }
+
+  void onApplePayResult(paymentResult) {
+    _updateSubscriptionStatus();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Apple Pay successful! Subscription activated.")),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,18 +178,62 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                   _buildSubscriptionOption(
                     plan: 'Monthly Plan',
                     price: '\$8.90\nper month',
-                    onTap: () => _handleSubscription('Monthly Plan'),
+                    onTap: () {
+                      setState(() {
+                        selectedPlan = 'Monthly Plan';
+                      });
+                    },
                   ),
                   _buildSubscriptionOption(
                     plan: 'Annual Plan',
                     price: '\$6.90\nper month,\nbilled annually',
-                    onTap: () => _handleSubscription('Annual Plan'),
+                    onTap: () {
+                      setState(() {
+                        selectedPlan = 'Annual Plan';
+                      });
+                    },
                   ),
                 ],
               ),
+              const SizedBox(height: 30),
+              const Divider(thickness: 1),
+              const SizedBox(height: 20),
+              if (selectedPlan.isNotEmpty) ...[
+                // Center(
+                //   child: Text(
+                //     'Selected Plan: $selectedPlan',
+                //     style: GoogleFonts.roboto(
+                //       fontSize: 16,
+                //       fontWeight: FontWeight.bold,
+                //       color: Colors.green,
+                //     ),
+                //   ),
+                // ),
+                const SizedBox(height: 20),
+                _buildApplePayButton(),
+              ],
             ],
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildApplePayButton() {
+    return Center(
+      child: ApplePayButton(
+        paymentConfigurationAsset: 'apple_pay.json',
+        paymentItems: selectedPlan == 'Monthly Plan' ? _applePayItems : [
+          PaymentItem(
+            label: 'Annual Plan',
+            amount: '6.90',
+            status: PaymentItemStatus.final_price,
+          ),
+        ],
+        style: ApplePayButtonStyle.black,
+        type: ApplePayButtonType.buy,
+        onPaymentResult: onApplePayResult,
+        loadingIndicator: const CircularProgressIndicator(),
       ),
     );
   }
@@ -166,11 +243,13 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
     required String price,
     required VoidCallback onTap,
   }) {
+    bool isSelected = selectedPlan == plan;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: 150,
-        height: 150, 
+        height: 150,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -184,27 +263,53 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
             ),
           ],
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, 
+        child: Stack(
           children: [
-            Text(
-              plan,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.brown,
-              ),
-              textAlign: TextAlign.center,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  plan,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.brown,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  price,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
-            const SizedBox(height: 10),
-            Text(
-              price,
-              style: const TextStyle(
-                fontSize: 14,
-                color: Colors.black,
+            if (isSelected) ...[
+              Positioned(
+                top: 5,
+                right: 5,
+                child: Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 24,
+                ),
               ),
-              textAlign: TextAlign.center,
-            ),
+            ],
+            if (!isSelected) ...[
+              Positioned(
+                top: 5,
+                right: 5,
+                child: Icon(
+                  Icons.radio_button_unchecked,
+                  color: Colors.grey,
+                  size: 24,
+                ),
+              ),
+            ],
           ],
         ),
       ),
