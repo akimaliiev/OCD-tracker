@@ -24,7 +24,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
   final _googlePayItems = <PaymentItem>[
     const PaymentItem(
       label: 'Monthly Plan',
-      amount: '8.90',
+      amount: '5.99',
       status: PaymentItemStatus.final_price,
     ),
   ];
@@ -32,7 +32,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
   final _applePayItems = <PaymentItem>[
     const PaymentItem(
       label: 'Monthly Plan',
-      amount: '8.90',
+      amount: '5.99',
       status: PaymentItemStatus.final_price,
     ),
   ];
@@ -177,7 +177,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                 children: [
                   _buildSubscriptionOption(
                     plan: 'Monthly Plan',
-                    price: '\$8.90\nper month',
+                    price: '\$5.99\nper month',
                     onTap: () {
                       setState(() {
                         selectedPlan = 'Monthly Plan';
@@ -186,7 +186,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                   ),
                   _buildSubscriptionOption(
                     plan: 'Annual Plan',
-                    price: '\$6.90\nper month,\nbilled annually',
+                    price: '\$4.99\nper month,\nbilled annually',
                     onTap: () {
                       setState(() {
                         selectedPlan = 'Annual Plan';
@@ -226,7 +226,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
         paymentItems: selectedPlan == 'Monthly Plan' ? _applePayItems : [
           PaymentItem(
             label: 'Annual Plan',
-            amount: '6.90',
+            amount: '4.99',
             status: PaymentItemStatus.final_price,
           ),
         ],
