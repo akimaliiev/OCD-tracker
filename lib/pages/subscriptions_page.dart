@@ -263,55 +263,55 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
             ),
           ],
         ),
-        child: Stack(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  plan,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.brown,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  price,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-            if (isSelected) ...[
-              Positioned(
-                top: 5,
-                right: 5,
-                child: Icon(
-                  Icons.check_circle,
-                  color: Colors.green,
-                  size: 24,
-                ),
-              ),
-            ],
-            if (!isSelected) ...[
-              Positioned(
-                top: 5,
-                right: 5,
-                child: Icon(
-                  Icons.radio_button_unchecked,
-                  color: Colors.grey,
-                  size: 24,
-                ),
-              ),
-            ],
-          ],
-        ),
+        // child: Stack(
+        //   children: [
+        //     Column(
+        //       mainAxisAlignment: MainAxisAlignment.center,
+        //       children: [
+        //         Text(
+        //           plan,
+        //           style: const TextStyle(
+        //             fontSize: 16,
+        //             fontWeight: FontWeight.bold,
+        //             color: Colors.brown,
+        //           ),
+        //           textAlign: TextAlign.center,
+        //         ),
+        //         const SizedBox(height: 10),
+        //         Text(
+        //           price,
+        //           style: const TextStyle(
+        //             fontSize: 14,
+        //             color: Colors.black,
+        //           ),
+        //           textAlign: TextAlign.center,
+        //         ),
+        //       ],
+        //     ),
+        //     if (isSelected) ...[
+        //       Positioned(
+        //         top: 5,
+        //         right: 5,
+        //         child: Icon(
+        //           Icons.check_circle,
+        //           color: Colors.green,
+        //           size: 24,
+        //         ),
+        //       ),
+        //     ],
+        //     if (!isSelected) ...[
+        //       Positioned(
+        //         top: 5,
+        //         right: 5,
+        //         child: Icon(
+        //           Icons.radio_button_unchecked,
+        //           color: Colors.grey,
+        //           size: 24,
+        //         ),
+        //       ),
+        //     ],
+        //   ],
+        // ),
       ),
     );
   }
