@@ -1,6 +1,13 @@
 import Flutter
 import UIKit
 import flutter_local_notifications
+import Firebase
+import GoogleUtilities
+
+// Отключаем сбор IDFA
+Analytics.setAnalyticsCollectionEnabled(true)
+GULUserDefaults.standard().set(false, forKey: "allow_ad_personalization_signals")
+
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {

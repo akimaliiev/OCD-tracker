@@ -1,34 +1,34 @@
 {
-    "provider": "google_pay",
-    "data": {
-      "environment": "TEST",
-      "apiVersion": 2,
-      "apiVersionMinor": 0,
-      "allowedPaymentMethods": [
-        {
-          "type": "CARD",
+  "provider": "google_pay",
+  "data": {
+    "environment": "TEST",
+    "apiVersion": 2,
+    "apiVersionMinor": 0,
+    "allowedPaymentMethods": [
+      {
+        "type": "CARD",
+        "parameters": {
+          "allowedAuthMethods": ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+          "allowedCardNetworks": ["MASTERCARD", "VISA"]
+        },
+        
+        "tokenizationSpecification": {
+          "type": "PAYMENT_GATEWAY",
           "parameters": {
-            "allowedAuthMethods": ["PAN_ONLY", "CRYPTOGRAM_3DS"],
-            "allowedCardNetworks": ["MASTERCARD", "VISA"]
-          },
-          "tokenizationSpecification": {
-            "type": "PAYMENT_GATEWAY",
-            "parameters": {
-              "gateway": "example",
-              "gatewayMerchantId": "exampleGatewayMerchantId"
-            }
+            "gateway": "example",
+            "gatewayMerchantId": "BCR2DN7T5CKIZWIZ"
           }
         }
-      ],
-      "merchantInfo": {
-        "merchantId": "01234567890123456789",
-        "merchantName": "Example Merchant"
-      },
-      "transactionInfo": {
-        "totalPriceStatus": "FINAL",
-        "totalPrice": "8.90",
-        "currencyCode": "USD"
       }
+    ],
+    "merchantInfo": {
+      "merchantId": "BCR2DN7T5CKIZWIZ",
+      "merchantName": "Baimakhanov"
+    },
+    "transactionInfo": {
+      "totalPriceStatus": "FINAL",
+      "totalPrice": "8.90",
+      "currencyCode": "USD"
     }
   }
-  
+}

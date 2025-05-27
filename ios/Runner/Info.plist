@@ -39,8 +39,6 @@
 	<string>177501334482-4v7v03vkocp6q7ka4jen6hfgmc9e6li7.apps.googleusercontent.com</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>This app uses notifications to remind you about your tasks.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
