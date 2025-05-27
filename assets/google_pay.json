@@ -15,7 +15,7 @@
         "tokenizationSpecification": {
           "type": "PAYMENT_GATEWAY",
           "parameters": {
-            "gateway": "example",
+            "gateway": "braintree",
             "gatewayMerchantId": "BCR2DN7T5CKIZWIZ"
           }
         }
