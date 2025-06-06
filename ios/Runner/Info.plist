@@ -35,6 +35,9 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FIREBASE_ANALYTICS_COLLECTION_ENABLED</key>
+	<false/>
+
 	<key>GIDClientID</key>
 	<string>177501334482-4v7v03vkocp6q7ka4jen6hfgmc9e6li7.apps.googleusercontent.com</string>
 	<key>LSRequiresIPhoneOS</key>
