@@ -2,12 +2,6 @@ import Flutter
 import UIKit
 import flutter_local_notifications
 import Firebase
-import GoogleUtilities
-
-// Отключаем сбор IDFA
-Analytics.setAnalyticsCollectionEnabled(true)
-GULUserDefaults.standard().set(false, forKey: "allow_ad_personalization_signals")
-
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
@@ -16,17 +10,20 @@ GULUserDefaults.standard().set(false, forKey: "allow_ad_personalization_signals"
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
 
-    // Set the callback for FlutterLocalNotificationsPlugin
+    // ✅ Инициализация Firebase
+    FirebaseApp.configure()
+
+    // ✅ Установка колбэка для Flutter Local Notifications
     FlutterLocalNotificationsPlugin.setPluginRegistrantCallback { (registry) in
       GeneratedPluginRegistrant.register(with: registry)
     }
 
-    // Set UNUserNotificationCenter delegate to self
+    // ✅ Установка делегата для UNUserNotificationCenter
     if #available(iOS 10.0, *) {
       UNUserNotificationCenter.current().delegate = self
     }
 
-    // Register plugins with the Flutter engine
+    // ✅ Регистрация плагинов
     GeneratedPluginRegistrant.register(with: self)
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
